@@ -1,0 +1,3 @@
+Activity Scheduler and Request Management
+
+This project is an implementation of an activity selection algorithm, designed to schedule the maximum number of non-overlapping requests based on their start and finish times. It allows users to add requests, display them, and determine the largest possible set of activities that can be scheduled without conflict. The project also features an insertion sort algorithm to arrange requests by their finish times, ensuring optimal scheduling. This showcases skills in algorithmic problem-solving, sorting techniques, and managing time-based scheduling scenarios.
