@@ -1,26 +1,49 @@
-# Activity Scheduler and Request Management
+# 📅 Activity Scheduler and Request Management
 
-This project is an implementation of an activity selection algorithm, designed to schedule the maximum number of non-overlapping requests based on their start and finish times. It allows users to add requests, display them, and determine the largest possible set of activities that can be scheduled without conflict. The project also features an insertion sort algorithm to arrange requests by their finish times, ensuring optimal scheduling. This showcases skills in algorithmic problem-solving, sorting techniques, and managing time-based scheduling scenarios.
+## 🚀 Project Overview and Learning Outcomes
 
-## Instructions:
+This project focuses on implementing an **activity selection algorithm** to efficiently schedule the **maximum number of non-overlapping requests** based on their start and finish times. Users can add new requests, display the list of all activities, and find the largest set of activities that can be scheduled without conflict. Additionally, I integrated an **insertion sort algorithm** to organise requests by their finish times, ensuring the scheduling is as optimal as possible. ⏰
 
-### Add Requests:
+---
 
-Input a request ID, start time, and finish time.
+## ✨ Features
 
-### Display All Requests:
+- **Add Requests**: Input activities with start and finish times.
+- **Display Requests**: View all activities in the system.
+- **Optimal Scheduling**: Calculate the maximum number of non-overlapping requests using the activity selection algorithm.
+- **Sorted by Finish Time**: Activities are sorted by their finish time for optimal scheduling.
 
-Shows all the requests added to the system.
+---
 
-### Maximize Scheduled Requests:
+## 🛠️ How to Use
 
-The system calculates and displays the maximum number of non-overlapping requests based on start and finish times.
+1. **Add Requests**:
+   - Input the activity's ID, start time, and finish time.
+   
+2. **Display Requests**:
+   - View the entire list of activities added to the system.
 
-### Example:
+3. **Maximise Scheduled Requests**:
+   - The system calculates and displays the maximum number of non-overlapping activities based on start and finish times.
 
-Add requests: ID1 (9:00-10:00), ID2 (10:30-11:30).
-The program schedules the maximum number of non-overlapping requests.
+---
 
-### Expected output: 
+### 📊 Example Usage
 
-"ID1, ID2".
+- Add requests: `ID1` (9:00-10:00), `ID2` (10:30-11:30).
+- The program schedules the maximum number of non-overlapping activities.
+
+**Expected Output**:  
+`"ID1, ID2"`.
+
+---
+
+## 🏆 Achievements
+
+This project allowed me to explore **algorithmic problem-solving** in real-world **scheduling scenarios**. By implementing an **activity selection algorithm**, I gained hands-on experience in optimising scheduling tasks. I also integrated an **insertion sort algorithm** to ensure requests are sorted efficiently by their finish times, further sharpening my understanding of sorting techniques and their practical applications. 🎯
+
+---
+
+## 🌟 Overall
+
+Through building this activity scheduler, I developed a deeper understanding of how algorithms can be applied to **real-life scheduling problems**. It pushed me to think critically about optimisation and sorting, reinforcing my skills in managing data based on time constraints. This project showcases the power of algorithms in creating efficient solutions for scheduling or planning applications. 📅✨
