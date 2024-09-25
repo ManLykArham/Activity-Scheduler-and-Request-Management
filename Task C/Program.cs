@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 namespace Task_C
 {
     internal class Program
@@ -12,97 +9,163 @@ namespace Task_C
         static List<Request> requests = new List<Request>();
 
         // Converts the list to an array
-        static Request[] request = requests.ToArray();
+        static Request[] request;
 
         static void Main(string[] args)
         {
             bool finished = false; // Initializes a flag to control the loop
             do
             {
-                Console.WriteLine("Press ENTER"); // Prompts the user to press ENTER
-                Console.ReadKey(); // Waits for user input
-                Console.Clear(); // Clears the console
-                Console.WriteLine("1. Add Request"); // Displays menu option to add a request
-                Console.WriteLine("2. Display Requests"); // Displays menu option to show requests
-                Console.WriteLine("3. Display the largest possible set of requests"); // Displays menu option to find the largest set of requests
-                Console.WriteLine("4. Exit"); // Displays menu option to exit
-                Console.WriteLine("\n Choose a function"); // Prompts the user to choose a function
+                Console.WriteLine("Press ENTER");
+                Console.ReadKey();
+                Console.Clear();
+                Console.WriteLine("1. Add Request");
+                Console.WriteLine("2. Display Requests");
+                Console.WriteLine("3. Display the largest possible set of requests");
+                Console.WriteLine("4. Exit");
+                Console.WriteLine("\n Choose a function");
 
-                string option = Console.ReadLine(); // Reads user input
+                string option = Console.ReadLine();
 
                 switch (option)
                 {
                     case "1":
-                        Console.WriteLine("Please insert request ID:"); // Asks for request ID
-                        string id = Console.ReadLine(); // Stores user input as ID
-                        Console.WriteLine("Please insert request Start Time: (23:59)"); // Asks for start time
-                        string start = Console.ReadLine(); // Stores user input as start time
-                        Console.WriteLine("Please insert request Finish Time: (23:59)"); // Asks for finish time
-                        string finish = Console.ReadLine(); // Stores user input as finish time
-                        requests.Add(new Request(id, start, finish)); // Adds a new request to the list
-                        request = requests.ToArray(); // Converts the list to an array
+                        AddRequest(); // Calls the method to add a request
                         break;
                     case "2":
+                        Console.WriteLine("\nID | Start Time | Finish Time\n");
                         DisplayAct(); // Calls the method to display requests
+                        Console.WriteLine("\n");
                         break;
                     case "3":
                         activitySelection(); // Calls the method to find the largest set of requests
+                        Console.WriteLine("\n");
                         break;
                     case "4":
-                        finished = true; // Sets flag to true to end loop
-                        Console.WriteLine("Give me First Class :)"); // Displays a message before exiting
+                        finished = true; // Ends the loop
+                        Console.WriteLine("Exiting...");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option. Please choose a valid option.");
                         break;
                 }
-            } while (!finished); // Continues loop until the user chooses to exit
+            } while (!finished);
+        }
 
-            // Method to display all requests
-            void DisplayAct()
+        // Method to add a request
+        static void AddRequest()
+        {
+            Console.WriteLine("Please insert request ID:");
+            string id = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(id))
             {
-                for (int i = 0; i < request.Length; i++) // Iterates through the array
+                Console.WriteLine("ID cannot be empty!");
+                return;
+            }
+
+            Console.WriteLine("Please insert request Start Time: (HH:mm)");
+            string start = Console.ReadLine();
+            if (!ValidateTimeFormat(start))
+            {
+                Console.WriteLine("Invalid start time format! Please use HH:mm (e.g., 09:00).");
+                return;
+            }
+
+            Console.WriteLine("Please insert request Finish Time: (HH:mm)");
+            string finish = Console.ReadLine();
+            if (!ValidateTimeFormat(finish))
+            {
+                Console.WriteLine("Invalid finish time format! Please use HH:mm (e.g., 17:30).");
+                return;
+            }
+
+            // Validates if the start time is before the finish time
+            DateTime startTime = DateTime.Parse(start);
+            DateTime finishTime = DateTime.Parse(finish);
+
+            if (startTime >= finishTime)
+            {
+                Console.WriteLine("Start time must be before the finish time!");
+                return;
+            }
+
+            requests.Add(new Request(id, start, finish)); // Adds the new request
+            request = requests.ToArray(); // Converts the list to an array
+            Console.WriteLine("Request added successfully!\n");
+        }
+
+        // Validates time format (HH:mm)
+        static bool ValidateTimeFormat(string time)
+        {
+            return DateTime.TryParseExact(time, "HH:mm", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out _);
+        }
+
+        // Method to display all requests, sorted by ID numerically
+        static void DisplayAct()
+        {
+            if (request.Length == 0)
+            {
+                Console.WriteLine("No requests to display.");
+                return;
+            }
+
+            // Sort the requests by ID numerically
+            Array.Sort(request, (r1, r2) => int.Parse(r1.ID).CompareTo(int.Parse(r2.ID)));
+
+            // Display the sorted requests
+            for (int i = 0; i < request.Length; i++)
+            {
+                Console.WriteLine($"{request[i].ID}, {request[i].STime}, {request[i].FTime}");
+            }
+        }
+
+        // Method to select the largest possible set of requests that don't overlap
+        static void activitySelection()
+        {
+            InsertionSort(); // Sorts the requests by finish time
+            int k = 0;
+            List<Request> selectedRequests = new List<Request>();
+            selectedRequests.Add(request[k]); // Adds the first request
+
+            for (int i = 1; i < request.Length; i++)
+            {
+                if (DateTime.Parse(request[i].STime).CompareTo(DateTime.Parse(request[k].FTime)) > 0)
                 {
-                    Console.WriteLine(request[i].ID + ", " + request[i].STime + ", " + request[i].FTime); // Displays request details
+                    selectedRequests.Add(request[i]); // Adds the request to the selected list
+                    k = i; // Updates the last added request index
                 }
             }
 
-            // Method to select the largest possible set of requests that don't overlap
-            void activitySelection()
+            if (selectedRequests.Count == 0)
             {
-                InsertionSort(); // Sorts the requests by finish time
-                int k = 0;
-                List<Request> ActivitySelection = new List<Request>();
-                ActivitySelection.Add(request[k]); // Adds the first request to the selected list
-
-                for (int i = 1; i < request.Length; i++)
-                {
-                    if (request[i].STime.CompareTo(request[k].FTime) > 0) // Checks if the next request does not overlap with the last added request
-                    {
-                        ActivitySelection.Add(request[i]); // Adds the request to the selected list
-                        k = i; // Updates the index of the last added request
-                    }
-                }
-
-                for (int i = 0; i < ActivitySelection.Count; i++) // Iterates through the selected list
-                {
-                    Console.WriteLine(ActivitySelection[i].ID + ", " + ActivitySelection[i].STime + ", " + ActivitySelection[i].FTime); // Displays the selected requests
-                }
+                Console.WriteLine("No non-overlapping requests found.");
             }
-
-            // Method to sort the requests by finish time using insertion sort
-            void InsertionSort()
+            else
             {
-                for (int i = 1; i < request.Length; i++) // Iterates through the array
+                Console.WriteLine("Selected non-overlapping requests:");
+                for (int i = 0; i < selectedRequests.Count; i++)
                 {
-                    Request value = request[i]; // Stores the current request for comparison
-                    int j = i;
-                    for (; j > 0 && value.FTime.CompareTo(request[j - 1].FTime) < 0; j--) // Compares current request with previous ones
-                    {
-                        request[j] = request[j - 1]; // Shifts requests to the right if they have a later finish time
-                    }
-                    request[j] = value; // Inserts the current request in the correct position
+                    Console.WriteLine($"{selectedRequests[i].ID}, {selectedRequests[i].STime}, {selectedRequests[i].FTime}");
                 }
+                Console.WriteLine($"\nTotal non-overlapping requests: {selectedRequests.Count}");
             }
+        }
 
-            Console.ReadKey(); // Waits for user input before closing the console
+        // Method to sort the requests by finish time using insertion sort
+        static void InsertionSort()
+        {
+            for (int i = 1; i < request.Length; i++)
+            {
+                Request value = request[i];
+                int j = i;
+                while (j > 0 && DateTime.Parse(value.FTime).CompareTo(DateTime.Parse(request[j - 1].FTime)) < 0)
+                {
+                    request[j] = request[j - 1];
+                    j--;
+                }
+                request[j] = value;
+            }
         }
     }
 }
