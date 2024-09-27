@@ -40,7 +40,7 @@ This project focuses on implementing an **activity selection algorithm** to effi
 
 ## 🎥 Demo
 
-Watch the demo of the Activity Scheduler and Request Management Application:
+Watch the demo of the Activity Scheduler and Request Management project:
 
 [Demo Video](https://youtu.be/8dTzxvAUaQ8?si=Uqb4AtU5lOu3QSt7)
 
